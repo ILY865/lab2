@@ -1,0 +1,45 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Менеджер" as Manager
+
+' --- Клиенты ---
+usecase "Просмотр списка клиентов" as UC_ViewClients
+usecase "Изменить список клиентов" as UC_EditClients
+usecase "Добавить клиента" as UC_AddClient
+usecase "Удалить клиента" as UC_DelClient
+
+' --- Путёвки ---
+usecase "Просмотр путёвок" as UC_ViewTours
+usecase "Оформить путёвку" as UC_Order
+usecase "Отменить путёвку" as UC_Cancel
+usecase "Изменить список путёвок" as UC_EditTours
+usecase "Добавить путёвку" as UC_AddTour
+usecase "Удалить путёвку" as UC_DelTour
+
+' --- Менеджеры ---
+usecase "Просмотр списка менеджеров" as UC_ViewManagers
+usecase "Изменить список менеджеров" as UC_EditManagers
+usecase "Добавить менеджера" as UC_AddManager
+usecase "Удалить менеджера" as UC_DelManager
+
+' --- Связи ---
+Manager --> UC_ViewClients
+UC_ViewClients --> UC_EditClients
+UC_EditClients ..> UC_AddClient : include
+UC_EditClients ..> UC_DelClient : include
+
+Manager --> UC_ViewTours
+UC_ViewTours --> UC_Order
+UC_ViewTours --> UC_Cancel
+UC_ViewTours --> UC_EditTours
+UC_EditTours ..> UC_AddTour : include
+UC_EditTours ..> UC_DelTour : include
+
+Manager --> UC_ViewManagers
+UC_ViewManagers --> UC_EditManagers
+UC_EditManagers ..> UC_AddManager : include
+UC_EditManagers ..> UC_DelManager : include
+
+@enduml

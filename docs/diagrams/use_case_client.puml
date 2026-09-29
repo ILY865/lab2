@@ -1,0 +1,18 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Клиент" as Client
+
+usecase "Просмотр путёвок" as UC_ViewTours
+usecase "Оформить путёвку" as UC_Order
+usecase "Просмотр своих путёвок" as UC_ViewMine
+usecase "Отменить путёвку" as UC_Cancel
+
+Client --> UC_ViewTours
+UC_ViewTours --> UC_Order
+
+Client --> UC_ViewMine
+UC_ViewMine --> UC_Cancel
+
+@enduml
