@@ -4,13 +4,13 @@ skinparam packageStyle rectangle
 
 actor "Менеджер" as Manager
 
-' --- Клиенты ---
+'Клиенты
 usecase "Просмотр списка клиентов" as UC_ViewClients
 usecase "Изменить список клиентов" as UC_EditClients
 usecase "Добавить клиента" as UC_AddClient
 usecase "Удалить клиента" as UC_DelClient
 
-' --- Путёвки ---
+'Путёвки
 usecase "Просмотр путёвок" as UC_ViewTours
 usecase "Оформить путёвку" as UC_Order
 usecase "Отменить путёвку" as UC_Cancel
@@ -18,13 +18,13 @@ usecase "Изменить список путёвок" as UC_EditTours
 usecase "Добавить путёвку" as UC_AddTour
 usecase "Удалить путёвку" as UC_DelTour
 
-' --- Менеджеры ---
+'Менеджеры
 usecase "Просмотр списка менеджеров" as UC_ViewManagers
 usecase "Изменить список менеджеров" as UC_EditManagers
 usecase "Добавить менеджера" as UC_AddManager
 usecase "Удалить менеджера" as UC_DelManager
 
-' --- Связи ---
+'Связи
 Manager --> UC_ViewClients
 UC_ViewClients --> UC_EditClients
 UC_EditClients ..> UC_AddClient : include
