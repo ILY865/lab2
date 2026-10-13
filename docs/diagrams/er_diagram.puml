@@ -1,0 +1,65 @@
+@startuml
+!theme plain
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 80
+
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+    FontName Consolas
+}
+
+entity "UserRole" as UserRole {
+  * roleID : int <<PK>>
+  --
+  name : str
+}
+
+entity "User" as User {
+  * userID : int <<PK>>
+  --
+  name : str
+  surname : str
+  patronimik : str
+  phone : str
+  email : str
+  password_hash : str
+  * roleID : int <<FK>>
+}
+
+entity "Tour" as Tour {
+  * tourID : int <<PK>>
+  --
+  destination : str
+  start_date : date
+  end_date : date
+  price : float
+  seats_total : int
+  seats_available : int
+}
+
+entity "Status" as Status {
+  * statusID : int <<PK>>
+  --
+  name : str
+}
+
+entity "Booking" as Booking {
+  * bookingID : int <<PK>>
+  --
+  * userID : int <<FK>>
+  * tourID : int <<FK>>
+  * managerID : int <<FK>>
+  * statusID : int <<FK>>
+  booking_date : date
+}
+
+UserRole ||--o{ User : "определяет"
+User ||--o{ Booking : "оформляет (клиент)"
+User ||--o{ Booking : "оформляет (менеджер)"
+Tour ||--o{ Booking : "бронируется"
+Status ||--o{ Booking : "имеет статус"
+
+@enduml
