@@ -22,3 +22,8 @@ out/
 *.log
 *.tmp
 .DS_Store
+
+# --- База данных SQLite ---
+*.db
+*.sqlite
+*.sqlite3
