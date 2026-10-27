@@ -22,10 +22,11 @@ entity "User" as User {
   --
   name : str
   surname : str
-  patronimik : str
+  patronymik : str
   phone : str
   email : str
-  password_hash : str
+  password : str
+  balance : float
   * roleID : int <<FK>>
 }
 
@@ -53,13 +54,13 @@ entity "Booking" as Booking {
   * tourID : int <<FK>>
   * managerID : int <<FK>>
   * statusID : int <<FK>>
-  booking_date : date
+  total_price : float
 }
 
-UserRole ||--o{ User : "определяет"
-User ||--o{ Booking : "оформляет (клиент)"
-User ||--o{ Booking : "оформляет (менеджер)"
-Tour ||--o{ Booking : "бронируется"
-Status ||--o{ Booking : "имеет статус"
+UserRole -- User
+User -- Booking
+User -- Booking
+Tour -- Booking
+Status -- Booking
 
 @enduml

@@ -8,11 +8,14 @@ usecase "Просмотр путёвок" as UC_ViewTours
 usecase "Оформить путёвку" as UC_Order
 usecase "Просмотр своих путёвок" as UC_ViewMine
 usecase "Отменить путёвку" as UC_Cancel
+usecase "Пополнить баланс" as UC_Balance
 
-Client --> UC_ViewTours
-UC_ViewTours --> UC_Order
+Client -- UC_ViewTours
+UC_ViewTours -- UC_Order
 
-Client --> UC_ViewMine
-UC_ViewMine --> UC_Cancel
+Client -- UC_ViewMine
+UC_ViewMine -- UC_Cancel
 
-@endumlD
+Client -- UC_Balance
+
+@enduml

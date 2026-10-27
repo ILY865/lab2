@@ -3,7 +3,7 @@ import sqlite3
 from pathlib import Path
 
 
-DB_PATH = Path(__file__).resolve().parents[2] / "tour_agency.db"
+DB_PATH = Path(__file__).resolve().parents[3] / "tour_agency.db"
 
 SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
 
@@ -64,7 +64,7 @@ def get_all_bookings():
                 u.surname || ' ' || u.name AS client,
                 t.destination AS tour,
                 s.name AS status,
-                b.booking_date
+                b.total_price
             FROM Booking b
             JOIN User u ON b.userID = u.userID
             JOIN Tour t ON b.tourID = t.tourID
@@ -91,4 +91,4 @@ if __name__ == "__main__":
     print("\n=== Бронирования ===")
     for booking in get_all_bookings():
         print(f"  [{booking['bookingID']}] {booking['client']} → "
-              f"{booking['tour']} ({booking['status']}), {booking['booking_date']}")
+              f"{booking['tour']} ({booking['status']}), {booking['total_price']}")
