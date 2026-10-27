@@ -1,11 +1,13 @@
-
 import sqlite3
 from pathlib import Path
 
 
+# Путь к файлу базы данных (создаётся в корне проекта)
 DB_PATH = Path(__file__).resolve().parents[3] / "tour_agency.db"
 
+# Путь к SQL-скрипту со схемой
 SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
+
 
 def get_connection():
     """Возвращает соединение с базой данных SQLite."""
@@ -13,13 +15,11 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
 def init_db():
     """Создаёт базу данных из schema.sql (если ещё не создана)."""
     if DB_PATH.exists():
-        print(f"База данных уже существует: {DB_PATH.name}")
-        return
-
-    print(f"Создаю базу данных {DB_PATH.name}...")
+        return  # База уже существует, молча выходим
 
     with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
         schema_sql = f.read()
@@ -28,9 +28,9 @@ def init_db():
     try:
         conn.executescript(schema_sql)
         conn.commit()
-        print("База данных успешно создана.")
     finally:
         conn.close()
+
 
 def get_all_tours():
     """Возвращает список всех путёвок."""
@@ -40,6 +40,7 @@ def get_all_tours():
         return cur.fetchall()
     finally:
         conn.close()
+
 
 def get_all_users():
     """Возвращает список всех пользователей с их ролями."""
@@ -53,6 +54,7 @@ def get_all_users():
         return cur.fetchall()
     finally:
         conn.close()
+
 
 def get_all_bookings():
     """Возвращает список всех бронирований с деталями."""
@@ -73,22 +75,3 @@ def get_all_bookings():
         return cur.fetchall()
     finally:
         conn.close()
-
-
-if __name__ == "__main__":
-    init_db()
-
-    print("\n=== Путёвки ===")
-    for tour in get_all_tours():
-        print(f"  [{tour['tourID']}] {tour['destination']} — "
-              f"{tour['price']} руб., мест: {tour['seats_available']}/{tour['seats_total']}")
-
-    print("\n=== Пользователи ===")
-    for user in get_all_users():
-        print(f"  [{user['userID']}] {user['surname']} {user['name']} "
-              f"({user['role']}) — {user['email']}")
-
-    print("\n=== Бронирования ===")
-    for booking in get_all_bookings():
-        print(f"  [{booking['bookingID']}] {booking['client']} → "
-              f"{booking['tour']} ({booking['status']}), {booking['total_price']}")
