@@ -79,3 +79,15 @@ def delete(user_id: int):
     cur.execute("DELETE FROM User WHERE userID = ?", (user_id,))
     conn.commit()
     conn.close()
+
+def get_all_clients() -> list[User]:
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT u.*, r.name AS role_name 
+        FROM User u JOIN UserRole r ON u.roleID = r.roleID 
+        WHERE u.roleID = 1
+    """)
+    rows = cur.fetchall()
+    conn.close()
+    return [_map(r) for r in rows]

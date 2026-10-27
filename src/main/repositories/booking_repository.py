@@ -41,3 +41,22 @@ def create(user_id: int, tour_id: int, manager_id: int, total_price: float):
     """, (user_id, tour_id, manager_id, total_price))
     conn.commit()
     conn.close()
+
+
+def get_by_id(booking_id: int) -> Booking | None:
+    """Получает бронь по её ID."""
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Booking WHERE bookingID = ?", (booking_id,))
+    row = cur.fetchone()
+    conn.close()
+    return _map(row) if row else None
+
+
+def cancel_booking(booking_id: int):
+    """Меняет статус брони на 2 (Отменена)."""
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("UPDATE Booking SET statusID = 2 WHERE bookingID = ?", (booking_id,))
+    conn.commit()
+    conn.close()

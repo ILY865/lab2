@@ -67,3 +67,15 @@ def delete(tour_id: int):
     cur.execute("DELETE FROM Tour WHERE tourID = ?", (tour_id,))
     conn.commit()
     conn.close()
+
+
+def update_full(tour_id: int, destination: str, start_date: str, end_date: str, price: float, seats_total: int, seats_available: int):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        UPDATE Tour 
+        SET destination=?, start_date=?, end_date=?, price=?, seats_total=?, seats_available=?
+        WHERE tourID=?
+    """, (destination, start_date, end_date, price, seats_total, seats_available, tour_id))
+    conn.commit()
+    conn.close()
