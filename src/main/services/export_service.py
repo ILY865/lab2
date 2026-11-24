@@ -58,11 +58,10 @@ def _save_all_formats(data, base_filename):
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    # 2. CSV (для CSV "разглаживаем" вложенность)
+    # 2. CSV (для Excel: используем точку с запятой и кодировку windows-1251)
     csv_path = OUT_DIR / f"{base_filename}.csv"
-    with open(csv_path, "w", encoding="utf-8", newline="") as f:
-        # Берем ключи первого элемента (предполагаем, что структура одинаковая)
-        writer = csv.DictWriter(f, fieldnames=data[0].keys())
+    with open(csv_path, "w", encoding="windows-1251", newline="", errors="replace") as f:
+        writer = csv.DictWriter(f, fieldnames=data[0].keys(), delimiter=';')
         writer.writeheader()
         # Для вложенных словарей делаем строку (например, dates -> "start: ... | end: ...")
         for row in data:
