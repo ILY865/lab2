@@ -1,5 +1,5 @@
 from src.main.repositories import tour_repository, booking_repository, user_repository
-from src.main.services import booking_service, auth_service
+from src.main.services import booking_service, auth_service, export_service  # <-- добавили export_service
 
 
 def client_menu(user):
@@ -13,6 +13,7 @@ def client_menu(user):
         print("2. Мои бронирования")
         print("3. Отменить бронирование")
         print("4. Пополнить баланс")
+        print("5. Экспорт всех бронирований (JSON, CSV, XML, YAML)")
         print("0. Выйти")
         
         choice = input("Выберите действие: ").strip()
@@ -22,14 +23,13 @@ def client_menu(user):
             tours = tour_repository.get_all()
             print("\n--- Доступные путёвки ---")
             for t in tours:
-                # ДОБАВИЛИ ВЫВОД ДАТ
                 print(f"[{t.tour_id}] {t.destination} | Даты: {t.start_date} - {t.end_date} | Цена: {t.price} | Свободно мест: {t.seats_available}")
             
             try:
                 tour_id_str = input("\nВведите ID путёвки для оформления (или Enter, чтобы отмена): ").strip()
                 if tour_id_str:
                     tour_id = int(tour_id_str)
-                    booking_service.create_booking(user.user_id, tour_id, manager_id=2) # manager_id=2 - Арсений
+                    booking_service.create_booking(user.user_id, tour_id, manager_id=2)
                     print("\n[Успех] Путёвка оформлена!")
             except Exception as e:
                 print(f"\n[Ошибка] {e}")
@@ -82,6 +82,10 @@ def client_menu(user):
             except Exception as e:
                 print(f"\n[Ошибка] {e}")
 
+        # 5. Экспорт данных
+        elif choice == "5":
+            export_service.export_bookings()
+
         elif choice == "0":
             break
         else:
@@ -98,6 +102,8 @@ def manager_menu(user):
         print("4. Изменить/Удалить путёвку")
         print("5. Управление менеджерами")
         print("6. Список клиентов")
+        print("7. Экспорт всех путёвок (JSON, CSV, XML, YAML)")
+        print("8. Экспорт всех бронирований (JSON, CSV, XML, YAML)")
         print("0. Выйти")
         
         choice = input("Выберите действие: ").strip()
@@ -106,7 +112,6 @@ def manager_menu(user):
             tours = tour_repository.get_all()
             print("\n--- Список путёвок ---")
             for t in tours:
-                # ДОБАВИЛИ ВЫВОД ДАТ
                 print(f"[{t.tour_id}] {t.destination} | {t.start_date} - {t.end_date} | Цена: {t.price} | Мест: {t.seats_available}/{t.seats_total}")
                 
         elif choice == "2":
@@ -134,7 +139,6 @@ def manager_menu(user):
             tours = tour_repository.get_all()
             print("\n--- Список путёвок ---")
             for t in tours:
-                # ДОБАВИЛИ ВЫВОД ДАТ
                 print(f"[{t.tour_id}] {t.destination} | {t.start_date} - {t.end_date} | Цена: {t.price} | Мест: {t.seats_available}/{t.seats_total}")
             
             try:
@@ -148,7 +152,6 @@ def manager_menu(user):
                         print(f"Текущее направление: {tour.destination}")
                         new_dest = input("Новое направление (Enter - оставить): ").strip() or tour.destination
                         
-                        # Для простоты не меняем даты, только цену и места
                         new_price_str = input(f"Новая цена (Enter - оставить {tour.price}): ").strip()
                         new_price = float(new_price_str) if new_price_str else tour.price
                         new_seats_str = input(f"Новые свободные места (Enter - оставить {tour.seats_available}): ").strip()
@@ -165,7 +168,7 @@ def manager_menu(user):
                 print(f"\n[Ошибка] {e}")
 
         elif choice == "5":
-            managers_menu(user) # Переходим в подменю
+            managers_menu(user)
 
         elif choice == "6":
             clients = user_repository.get_all_clients()
@@ -174,6 +177,12 @@ def manager_menu(user):
                 print("Клиентов пока нет.")
             for c in clients:
                 print(f"[{c.user_id}] {c.surname} {c.name} | {c.email} | Баланс: {c.balance} руб.")
+
+        elif choice == "7":
+            export_service.export_tours()
+
+        elif choice == "8":
+            export_service.export_bookings()
 
         elif choice == "0":
             break
