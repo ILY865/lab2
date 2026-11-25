@@ -39,9 +39,17 @@ def export_bookings():
     for b in bookings:
         data.append({
             "booking_id": b.booking_id,
-            "client": b.client_name, # Связанные данные
-            "tour": b.tour_destination, # Связанные данные
-            "status": b.status_name, # Связанные данные
+            "client_id": b.user_id,           # <--- ДОБАВИЛИ ID КЛИЕНТА
+            "client": {
+                "name": b.client_name,
+                "type": "Физическое лицо"
+            },
+            "tour_id": b.tour_id,             # <--- ДОБАВИЛИ ID ТУРА
+            "tour": {
+                "destination": b.tour_destination,
+                "status": b.status_name
+            },
+            "manager_id": b.manager_id,       # <--- ДОБАВИЛИ ID МЕНЕДЖЕРА
             "total_price": b.total_price
         })
         

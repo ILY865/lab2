@@ -8,7 +8,7 @@ class Booking:
     manager_id: int
     status_id: int
     total_price: float
-    # Служебные поля для удобного вывода (не из БД)
+    
     client_name: str | None = None
     tour_destination: str | None = None
     status_name: str | None = None
